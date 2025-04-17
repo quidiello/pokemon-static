@@ -1,11 +1,20 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import type { PokemonListResponse } from "../types/pokemon";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import MainLayout from "../layouts/MainLayout.astro";
+
+const res = await fetch("https://pokeapi.co/api/v2/pokemon");
+
+const data = (await res.json()) as PokemonListResponse;
+console.log(data);
+
+const title = "Pokémon Static | home";
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<MainLayout title={title}>
+  <h1 class="text-3xl">Listado de Pokémon</h1>
+  <hr />
+  <ul>
+    {data.results.map((pokemon) => <li>{pokemon.name}</li>)}
+  </ul>
+</MainLayout>
